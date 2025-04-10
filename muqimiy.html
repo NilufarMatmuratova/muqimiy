@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muqimiy hayoti va ijodi</title>
+    <style>
+        :root {
+            --main-color: #6f5bdf;
+            --light-color: #efe9ff;
+            --dark-color: #2a2356;
+            --accent-color: #ff7e5f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--main-color);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--main-color) 0%, var(--dark-color) 100%);
+            color: white;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1200/800') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            color: var(--dark-color);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: var(--main-color);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .biography {
+            background-color: white;
+        }
+
+        .bio-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .bio-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .bio-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .bio-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .bio-content {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .bio-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--main-color);
+        }
+
+        .bio-content p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .visible .bio-content p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline {
+            background-color: var(--light-color);
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--main-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.5s ease;
+        }
+
+        .visible .timeline-item {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            transform: translateX(50px);
+        }
+
+        .visible .timeline-item:nth-child(even) {
+            transform: translateX(0);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -12px;
+            background-color: white;
+            border: 4px solid var(--main-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -12px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--main-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .poetry {
+            background-color: white;
+        }
+
+        .poetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .poetry-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .visible .poetry-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .poetry-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .poetry-card-header {
+            background-color: var(--main-color);
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .poetry-card-body {
+            padding: 20px;
+        }
+
+        .poetry-card-body p {
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .publications {
+            background-color: var(--light-color);
+        }
+
+        .publications-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .publication-item {
+            background-color: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .visible .publication-item {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .publication-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .publication-item h3 {
+            font-size: 1.4rem;
+            color: var(--main-color);
+            margin-bottom: 10px;
+        }
+
+        .publication-item .pub-meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+        .footer-column h4::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--main-color);
+    margin: 10px auto 0; /* auto left va right margin qo'shib, markazga olib keladi */
+}
+
+.footer-column h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center; /* Sarlavhani ham markazga to'g'rilaymiz */
+}
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Animation classes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        /* Video Section Styling */
+        .video-section {
+            background-color: var(--light-color);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .video-button {
+            display: inline-block;
+            background-color: var(--main-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .video-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            background-color: var(--accent-color);
+        }
+
+        /* Mobile Responsive */
+        @media screen and (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 5px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline-container::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">Muqimiy ijodi</div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Bosh sahifa</a></li>
+                    <li><a href="#biography">Hayoti</a></li>
+                    <li><a href="#video">Video</a></li>
+                    <li><a href="#timeline">Ijod yo'li</a></li>
+                    <li><a href="#poetry">She'rlar</a></li>
+                    <li><a href="#publications">Asarlar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Muhammad Aminxo'ja Muqimiyni kashf eting</h1>
+            <p>Taniqli va mashhur shoirning hayoti, ijod yo'li, she'rlari va asarlari bilan tanishing. Adabiyot olamining eng yorqin namoyondalaridan biri.</p>
+            <a href="#biography" class="btn">Batafsil ma'lumot</a>
+        </div>
+    </section>
+
+ 
+
+    <section id="biography" class="section biography">
+        <div class="container">
+            <h2 class="section-title">Hayoti</h2>
+            <div class="bio-container invisible">
+                <div class="bio-image">
+                    <img src="muqimiy.webp" alt="Shoir rasmi">
+                </div>
+                <div class="bio-content">
+                    <h3>Shoir haqida</h3>
+                    <p>Muhammad Aminxo’ja Mirzaxo’ja o‘g’li Muqimiy 1850-yilda Qo'qon shahrida Bekvachcha mahallasida, novvoy oilasida tug’ilgan. Otasi Mirzaxo'ja Mirfozil o‘g’li novvoylik kasbi bilan shug‘ullangan.</p>
+                    <p> Onasi Oyshabibi Sayidolim Nodirshayx qizidir. Mirzaxo’ja bilan Bibioysha oilasida beshta farzand bo‘lib, Muhammad Aminxo’ja to’rtinchi farzand hamda yolg'iz o‘g‘il edi. Muqimiyning onasi Oyshabibi ajoyib ta’limga ega, og’zaki ijodni juda yaxshi bilgan iqtidorli shoira bo‘lgan.</p>
+                    <p> Aynan shu ayol tufayli Muqimiyda shoirona iqtidor rivojlanadi va onasi o‘glini Alisher Navoiy, Hofiz Jomiy kabi ijodkorlar qiyofasida sharq mumtoz adabiyoti bilan tanishtiradi va umrining oxiriga qadar ularga bo’lgan muhabbati saqlanib qoladi. Muqimiy o‘zining birinchi she’rini o‘n yoshida yozadi.</p>
+                    <p>Muhammad Aminxo’ja “Muqimiy” taxallusi ostida 15 yoshidan boshlab ijod qilishni boshlaydi. 1865-yilda Muqimiyga ma’nan va ruhan madad berib turgan onasi vafot etadi, natijada Muqimiyning she’rlarida erta hayotdan ko’z yumgan onasiga nisbatan motam soyasi seziladi.</p>
+                    <p>Muqimiy dastlabki ta’limini o’z mahallasida joylashgan mulla Abduxalil maktabida oladi.</p>
+                    <p>Keyinchalik Qo’qondagi “Hokim oyim” madrasasida hamda 1872-1873-yillarda Buxoroga borib “Mehtar ambar” madrasasida o’qishini davom ettiradi. 1876-yilda shoir o’qishini tugatib Qo’qonga qaytib keladi va yer qurilishi mahkamasida mirzalik qiladi. Shu davrlar oralig’ida Muqimiy uylanadi va afsuski o’sha davrdagi yo’qchilik va kambag‘allik tufayli oilasi buziladi.</p>
+                    <p>Muqimiy moliyaviy jihatdan boy bo’lmagan bo’lsada, ma’naviy jihatdan juda kuchli shaxs sifatida tanilgan.</p>
+                    <p>Muqimiy butun hayotini mutolaa va ijod qilishga bag‘ishlaydi. Muqimiy o‘zining asarlaridagi lirikasi va davrning hukmron boshqaruvchilarini va ularning olib borayotgan siyosatlarini kuchli tanqid ostiga olib bir qancha hajviy asarlar, yumorlari bilan jamiyat qalbiga kirib boradi va shuhrat qozonadi.</p>
+                    <p>Muqimiydan bizgacha juda ko‘plab asarlari yetib kelmagan bo‘lsada, yetib kelganlarining orasida ham taqsinga sazovorlari bir talaygina. Misol qilib aytadigan bo’lsak, Muqimiy qalamiga mansub eng mashhur asarlardan biri hisoblanmish “Sayohatnoma”, iqtisodiyotga bevosita bog’liq bo’lgan “Tanobchilar” hajviyasi, shu jumladan “Loy”, “Burun”, “Ko’saman”, “Bezgak” va “Otim” yumoristik she’rlari shoir ijodining abadiyatini saqlab turuvchi asarlardir.</p>
+                    <p>Bu ko’proq uning hajviy yo’nalishda qilgan ijod na’munalarida ko’proq uchraydi. Muqimiy umri davomida 30 ga yaqin hajviy yo’nalishda asarlar yaratgan. Shular jumlasidan, “Tanobchilar”, “Saylov”, “Devonamen”, “Ko’samen”, “Loy”, “Shikoyati bezgak”, “Ta’rifi pech” hajviy asarlari yaqqol misol bo’la oladi.</p>
+                    <p>Adibning eng mashhur satiralaridan biri bu “Tanobchilar” hajviy asari hisoblanadi. Shoir 1876-yil Buxoroda madrasani tugatib Qo’qonga qaytib kelganidan keyin yer qurilishi mahkamasida mirza lavozimida ishlab yurib, amaldorlarning xalqqa qilayotgan nohaqliklariga befarq qarab tura olmasdan ushbu hajviy asarini yozadi.</p>
+                    <p> Asarda kambag'al chorakor dehqon mehnatidan o'z manfaatlari uchun foydalangan, ularni aldab katta zarar yetkazgan Sulton Ali va Hakimjon kabi hiylakor mahalliy amaldorlar qiyofasi shoir tomonidan o‘tkir misralarda fosh etiladi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="section timeline">
+        <div class="container">
+            <h2 class="section-title">Ijod yo'li</h2>
+            <div class="timeline-container invisible">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1850</div>
+                        <h3>Tug'ilishi</h3>
+                        <p>Qo'qon shahrida novvoy oilasida dunyoga keldi.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">15 yoshida</div>
+                        <h3>Ijodni boshlashi</h3>
+                        <p>Muhammad Aminxo’ja “Muqimiy” taxallusi ostida 15 yoshidan boshlab ijod qilishni boshlaydi.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        `1865`
+                        <h3>Onasi vafot etdi</h3>
+                        <p>1865-yilda Muqimiyga ma’nan va ruhan madad berib turgan onasi vafot etadi.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1872-1873</div>
+                        <h3>Hokim oyim</h3>
+                        <p>Keyinchalik Qo’qondagi “Hokim oyim” madrasasida hamda 1872-1873-yillarda Buxoroga borib “Mehtar ambar” madrasasida o’qishini davom ettiradi.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1876</div>
+                        <h3>Xajviy asar</h3>
+                        <p>Adibning eng mashhur satiralaridan biri bu “Tanobchilar” hajviy asari hisoblanadi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video" class="section video-section">
+        <div class="container">
+            <h2 class="section-title">Shoir bilan tanishing hujjatli film</h2>
+            <a href="Avdan.mp4" target="_blank" class="video-button">Videoni ko'rish</a>
+        </div>
+    </section> 
+
+    <section id="poetry" class="section poetry">
+        <div class="container">
+            <h2 class="section-title">She'rlar</h2>
+            <div class="poetry-grid invisible">
+                <div class="poetry-card">
+                    <div class="poetry-card-header">
+                        <h3>TANOBCHILAR</h3>
+                    </div>
+                    <div class="poetry-card-body">
+                        <p>Bo’ldi taajjub, qiziq hangomalar,<br>
+                            Arz etayin emdi yozib nomalar.<br><br>
+                            Adl qulog’i-la eshit hlimi,<br>
+                            Zulm qilur, baski, menga zolimi.<br><br>
+                            O’n ik(k)i oyda keladur bir tanob,<br>
+                            O’zgalara rohatu menga azob.<br><br>
+                            Sulton Alixo’ja, Hakimjon – ikav,<br>
+                            Biri xotun, birisi bo’ldi kuyav.<br><br>
+                            Ikkalasi bo’ldi chunon ittifoq,<br>
+                            Go’yo xayol aylaki (qilmay nifoq).</p>
+                    </div>
+                </div>
+                <div class="poetry-card">
+                    <div class="poetry-card-header">
+                        <h3>ZULM ILA QAHRU G’AZAB</h3>
+                    </div>
+                    <div class="poetry-card-body">
+                        <p>Zulm ila qahru g’azab izhor qilmoq shunchalar,<br>
+                            Oshiqi bechoraga ozor qilmoq shunchalar.<br><br>
+                            Gul debon sevgon kishining ko’kragiga nish urib,<br>
+                            Xasta-yu ma’yus etib, afgor qilmoq shunchalar.<br><br>
+                            To’tiyi shirinsuxan ag’yorlarning bazmida,<br>
+                            Bizga kelganda gapirmay, zor qilmoq shunchalar.<br><br>
+                            Sizga kim aydi: muhabbat ahlini qil ihtisob,<br>
+                            Qo’rqutib o’y aybiga iqror qilmoq shunchalar.<br><br>
+                            Garchi kelsa, eski to’n, bizdek duogo’yi faqir,<br>
+                            Kambag’alning xirqasidan or qilmoq shunchalar.</p>
+                    </div>
+                </div>
+                <div class="poetry-card">
+                    <div class="poetry-card-header">
+                        <h3>KIM DESUN</h3>
+                    </div>
+                    <div class="poetry-card-body">
+                        <p>Ul tag’ofulpeshag’a holi xarobim kim desun?<br>
+                            Hajrida mundog’ meni ko’rgan azobim, kim desun?<br><br>
+                            Kunduzi bir yerda bir dam olmay oromu qaror,<br>
+                            Lahzae yo’q kechalar ko’zlarda xobim, kim desun?<br><br>
+                            O’z ko’mochig’a, masalkim, tortadur kul har kishi,<br>
+                            Bas, kuyub ishqida chekkan iztirobim, kim desun?<br><br>
+                            Kuymagan bo’lsa birov mehru muhabbat o’tig’a,<br>
+                            Sham’dek to subh o’rtab tabu tobim, kim desun?<br><br>
+                            Hamnishindurlar ulug’larga xushomadgo’ylar,<br>
+                            Yo’lida jononimi xayru savobim kim desun?<br><br>
+                            Gar qilich boshimg’a ham kelsa, degayman rostin,<br>
+                            So’zki haq bo’lsa, savolimg’a javobim, kim desun?<br><br>
+                            Do’stlar, so’rsang g’izosidin Muqimiy, erta-kech,<br>
+                            Qon sharob ichsam, jigarlardur kabobim, kim desun?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- 
+    <section id="publications" class="section publications">
+        <div class="container">
+            <h2 class="section-title">Asarlar va maqolalar</h2>
+            <div class="publications-list invisible">
+                <div class="publication-item">
+                    <h3>Ko'ngil oynasi</h3>
+                    <div class="pub-meta">
+                        <span>She'rlar to'plami</span>
+                        <span>2005-yil</span>
+                        <span>Adabiyot nashriyoti</span>
+                    </div>
+                    <p>Shoirning birinchi she'rlar to'plami. Ushbu to'plamda shoir tabiat go'zalliklari, muhabbat va hayot falsafasi haqidagi she'rlarini jamlagan.</p>
+                </div>
+                <div class="publication-item">
+                    <h3>Tushlar saltanati</h3>
+                    <div class="pub-meta">
+                        <span>She'rlar to'plami</span>
+                        <span>2010-yil</span>
+                        <span>Sharq nashriyoti</span>
+                    </div>
+                    <p>Ushbu to'plamda shoir insonning ichki dunyosi, tushlar va xayollar olamiga sayohat qiladi. To'plamda falsafiy she'rlar ko'pchilikni tashkil etadi.</p>
+                </div>
+                <div class="publication-item">
+                    <h3>Zamonaviy she'riyatning rivojlanish tendensiyalari</h3>
+                    <div class="pub-meta">
+                        <span>Ilmiy maqola</span>
+                        <span>2012-yil</span>
+                        <span>Adabiyot va san'at jurnali</span>
+                    </div>
+                    <p>Ushbu maqolada shoir zamonaviy she'riyatning rivojlanish yo'nalishlari, yangi uslublar va an'analar haqida o'z fikrlarini bayon qilgan.</p>
+                </div>
+                <div class="publication-item">
+                    <h3>Umid gulzori</h3>
+                    <div class="pub-meta">
+                        <span>She'rlar to'plami</span>
+                        <span>2015-yil</span>
+                        <span>Yangi asr nashriyoti</span>
+                    </div>
+                    <p>Shoirning eng mashhur to'plami. Ushbu to'plamda Vatan sevgisi, ona tabiat va insoniy munosabatlar haqidagi she'rlar o'rin olgan.</p>
+                </div>
+                <div class="publication-item">
+                    <h3>Mumtoz she'riyat an'analari va zamonaviy she'riyat</h3>
+                    <div class="pub-meta">
+                        <span>Risola</span>
+                        <span>2018-yil</span>
+                        <span>Ilm-fan nashriyoti</span>
+                    </div>
+                    <p>Ushbu risolada mumtoz adabiyot an'analarining zamonaviy she'riyatga ta'siri, mumtoz janrlarning zamonaviy talqini haqida so'z yuritilgan.</p>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Shoir haqida</h4>
+                <ul>
+                    <li><a href="#biography">Hayoti</a></li>
+                    <li><a href="#timeline">Ijod yo'li</a></li>
+                    <li><a href="#poetry">She'rlar</a></li>
+                    <li><a href="#publications">Asarlar</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Bog'lanish</h4>
+                <ul>
+                    <li><a href="#">Telefon: +998 93 395 10 05</a></li>
+                    <li><a href="#">Email: muqimiysayti@gmail.com</a></li>
+                    <li><a href="#">O'zbekiston</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Ijtimoiy tarmoqlar</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Telegram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>2025 Muqimiy shoir hayoti va ijodi. Matmuratova Nilufar tayyorladi.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Scroll animatsiyalari
+            function checkVisible() {
+                $('.invisible').each(function() {
+                    if ($(this).offset().top < $(window).scrollTop() + $(window).height() - 100) {
+                        $(this).removeClass('invisible').addClass('visible');
+                    }
+                });
+            }
+
+            checkVisible();
+            $(window).on('scroll', function() {
+                checkVisible();
+            });
+
+            // Ankor havolalar uchun smooth scroll
+            $('a[href^="#"]').on('click', function(event) {
+                event.preventDefault();
+                var target = $(this.getAttribute('href'));
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 70
+                    }, 1000);
+                }
+            });
+
+            // Header scroll effekti
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('header').addClass('scrolled');
+                } else {
+                    $('header').removeClass('scrolled');
+                }
+            });
+
+            // Poetry card hover effekti
+            $('.poetry-card').hover(
+                function() {
+                    $(this).find('.poetry-card-body').css('background-color', 'var(--light-color)');
+                },
+                function() {
+                    $(this).find('.poetry-card-body').css('background-color', 'white');
+                }
+            );
+        });
+    </script>
+</body>
+</html>
